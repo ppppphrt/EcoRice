@@ -3,7 +3,11 @@ from tkinter import ttk, messagebox
 import random
 import csv
 from datetime import datetime
-import matplotlib.pyplot as plt
+import matplotlib
+from matplotlib import pyplot as plt
+
+# Ensure Matplotlib uses TkAgg backend for external windows
+matplotlib.use('TkAgg')
 
 # Function to simulate sensor data collection
 def collect_sensor_data():
@@ -64,11 +68,11 @@ def plot_co2_emissions(filename="ecorice_data.csv"):
         plt.title("CO2 Emissions Over Time")
         plt.legend()
         plt.tight_layout()
-        plt.show()
+        plt.show()  # Display graph in an external window
     except Exception as e:
         messagebox.showerror("Error", f"Error plotting data: {e}")
 
-# Function to plot historical data
+# Function to plot multiple historical metrics
 def plot_historical_data(filename="ecorice_data.csv"):
     timestamps = []
     co2_levels = []
@@ -95,6 +99,7 @@ def plot_historical_data(filename="ecorice_data.csv"):
         plt.show()
     except Exception as e:
         messagebox.showerror("Error", f"Error plotting historical data: {e}")
+
 
 # Initialize GUI
 app = tk.Tk()
@@ -133,6 +138,7 @@ ttk.Label(frame, textvariable=co2_emissions_var).grid(row=4, column=1, sticky="w
 ttk.Button(app, text="Update Data", command=update_data).pack(pady=5)
 ttk.Button(app, text="Save Data", command=save_data).pack(pady=5)
 ttk.Button(app, text="Plot CO2 Emissions", command=plot_co2_emissions).pack(pady=5)
+
 ttk.Button(app, text="Plot Historical Data", command=plot_historical_data).pack(pady=5)
 
 # Start the GUI event loop
