@@ -40,6 +40,16 @@ def calculate_carbon_credits():
     income = co2_reduction * 0.5  # Assume 0.5 THB per kg of CO₂ reduced
     messagebox.showinfo("Carbon Credits", f"CO₂ Reduction: {co2_reduction:.2f} kg\nPotential Income: {income:.2f} THB")
 
+# Function to calculate profit or loss
+def calculate_profit_or_loss():
+    try:
+        cost = float(cost_var.get())
+        revenue = float(revenue_var.get())
+        net_profit = revenue - cost
+        result_text.set(f"Net Profit: {'{:.2f}'.format(net_profit)} THB")
+    except ValueError:
+        messagebox.showerror("Invalid Input", "Please enter valid numbers for cost and revenue.")
+
 # Function to plot historical data
 def plot_historical_data():
     timestamps = ["10:00", "11:00", "12:00", "13:00", "14:00"]
@@ -63,54 +73,85 @@ def switch_frame(frame):
 # Initialize the main Tkinter app
 app = tk.Tk()
 app.title("EcoRice Dashboard")
-app.geometry("400x600")
+app.geometry("500x700")
 app.resizable(False, False)
 
 # Create Frames for Pages
 dashboard_frame = ttk.Frame(app)
 insight_frame = ttk.Frame(app)
 graph_frame = ttk.Frame(app)
+account_frame = ttk.Frame(app)
 
-for frame in (dashboard_frame, insight_frame, graph_frame):
+for frame in (dashboard_frame, insight_frame, graph_frame, account_frame):
     frame.grid(row=0, column=0, sticky="nsew")
 
 # ------------------------------
 # Dashboard Page
 # ------------------------------
-ttk.Label(dashboard_frame, text="EcoRice Dashboard", font=("Arial", 26)).pack(pady=20)
+ttk.Label(dashboard_frame, text="EcoRice Dashboard", font=("Arial", 24)).pack(pady=20, anchor="center")
 
 frame = ttk.Frame(dashboard_frame)
-frame.pack(pady=10, fill="x")
+frame.pack(pady=10)
 
 labels = {}
 for param in ["Soil Moisture", "Water Level", "Temperature", "Humidity", "CO₂ Emissions"]:
-    ttk.Label(frame, text=f"{param}:", font=("Arial", 18)).pack(anchor="w")
-    labels[param] = ttk.Label(frame, text="N/A", font=("Arial", 14, "bold"), foreground="green")
-    labels[param].pack(anchor="w")
+    row_frame = ttk.Frame(frame)
+    row_frame.pack(fill="x", pady=5)
+    ttk.Label(row_frame, text=f"{param}:", font=("Arial", 14), width=20, anchor="e").pack(side="left", padx=5)
+    labels[param] = ttk.Label(row_frame, text="N/A", font=("Arial", 14, "bold"), foreground="green", anchor="w")
+    labels[param].pack(side="left")
 
-ttk.Button(dashboard_frame, text="Update Data", command=update_dashboard).pack(pady=10,padx=130)
-ttk.Button(dashboard_frame, text="Calculate Carbon Credits", command=calculate_carbon_credits).pack(pady=5)
-ttk.Button(dashboard_frame, text="Go to Insights", command=lambda: switch_frame(insight_frame)).pack(pady=5)
-ttk.Button(dashboard_frame, text="Go to Graphs", command=lambda: switch_frame(graph_frame)).pack(pady=5)
+# Centered button frame
+button_frame = ttk.Frame(dashboard_frame)
+button_frame.pack(pady=30)
+
+ttk.Button(button_frame, text="Update Data", command=update_dashboard, width=25).pack(pady=5 ,padx=100)
+ttk.Button(button_frame, text="Calculate Carbon Credits", command=calculate_carbon_credits, width=25).pack(pady=5)
+ttk.Button(button_frame, text="Go to Insights", command=lambda: switch_frame(insight_frame), width=25).pack(pady=5)
+ttk.Button(button_frame, text="Go to Graphs", command=lambda: switch_frame(graph_frame), width=25).pack(pady=5)
+ttk.Button(button_frame, text="Go to Household Account", command=lambda: switch_frame(account_frame), width=25).pack(pady=5)
 
 # ------------------------------
 # Insights Page
 # ------------------------------
-ttk.Label(insight_frame, text="Insights", font=("Arial", 20)).pack(pady=10)
+ttk.Label(insight_frame, text="Insights", font=("Arial", 24)).pack(pady=20, anchor="center")
 
 insight_text = tk.StringVar()
-insight_label = ttk.Label(insight_frame, textvariable=insight_text, font=("Arial", 12), wraplength=350, foreground="blue")
-insight_label.pack(pady=10)
+insight_label = ttk.Label(insight_frame, textvariable=insight_text, font=("Arial", 14), wraplength=400, foreground="blue", anchor="center")
+insight_label.pack(pady=20)
 
-ttk.Button(insight_frame, text="Back to Dashboard", command=lambda: switch_frame(dashboard_frame)).pack(pady=5)
+ttk.Button(insight_frame, text="Back to Dashboard", command=lambda: switch_frame(dashboard_frame), width=25).pack(pady=10)
 
 # ------------------------------
 # Graph Page
 # ------------------------------
-ttk.Label(graph_frame, text="Graphs", font=("Arial", 20)).pack(pady=10)
+ttk.Label(graph_frame, text="Graphs", font=("Arial", 24)).pack(pady=20, anchor="center")
 
-ttk.Button(graph_frame, text="View Historical Data", command=plot_historical_data).pack(pady=10)
-ttk.Button(graph_frame, text="Back to Dashboard", command=lambda: switch_frame(dashboard_frame)).pack(pady=5)
+ttk.Button(graph_frame, text="View Historical Data", command=plot_historical_data, width=25).pack(pady=10)
+ttk.Button(graph_frame, text="Back to Dashboard", command=lambda: switch_frame(dashboard_frame), width=25).pack(pady=10)
+
+# ------------------------------
+# Household Account Page
+# ------------------------------
+ttk.Label(account_frame, text="Household Account", font=("Arial", 24)).pack(pady=20, anchor="center")
+
+account_form = ttk.Frame(account_frame)
+account_form.pack(pady=20)
+
+ttk.Label(account_form, text="Total Cost (THB):", font=("Arial", 14)).grid(row=0, column=0, pady=5, padx=5, sticky="e")
+cost_var = tk.StringVar()
+ttk.Entry(account_form, textvariable=cost_var, width=20).grid(row=0, column=1, pady=5, padx=5)
+
+ttk.Label(account_form, text="Total Revenue (THB):", font=("Arial", 14)).grid(row=1, column=0, pady=5, padx=5, sticky="e")
+revenue_var = tk.StringVar()
+ttk.Entry(account_form, textvariable=revenue_var, width=20).grid(row=1, column=1, pady=5, padx=5)
+
+result_text = tk.StringVar(value="Net Profit: N/A")
+result_label = ttk.Label(account_frame, textvariable=result_text, font=("Arial", 14, "bold"))
+result_label.pack(pady=10)
+
+ttk.Button(account_frame, text="Calculate Profit/Loss", command=calculate_profit_or_loss, width=25).pack(pady=10)
+ttk.Button(account_frame, text="Back to Dashboard", command=lambda: switch_frame(dashboard_frame), width=25).pack(pady=10)
 
 # Start with Dashboard Frame
 switch_frame(dashboard_frame)
