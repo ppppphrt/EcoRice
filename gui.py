@@ -5,7 +5,6 @@ import csv
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-
 # Function to simulate sensor data collection
 def collect_sensor_data():
     return {
@@ -14,9 +13,8 @@ def collect_sensor_data():
         "water_level": random.uniform(0.0, 15.0),  # cm
         "air_temp": random.uniform(25.0, 35.0),  # Celsius
         "air_humidity": random.uniform(40.0, 90.0),  # Percentage
-        "co2_emissions": random.uniform(300, 450),  # ppm
+        "co2_emissions": random.uniform(300, 450),  # ppm,
     }
-
 
 # Function to save data to CSV
 def save_data_to_csv(data, filename="ecorice_data.csv"):
@@ -30,7 +28,6 @@ def save_data_to_csv(data, filename="ecorice_data.csv"):
     except Exception as e:
         messagebox.showerror("Error", f"Error writing to CSV: {e}")
 
-
 # Function to update sensor data on GUI
 def update_data():
     global current_data
@@ -41,13 +38,11 @@ def update_data():
     air_humidity_var.set(f"{current_data['air_humidity']:.2f} %")
     co2_emissions_var.set(f"{current_data['co2_emissions']:.2f} ppm")
 
-
 # Function to save current data
 def save_data():
     if current_data:
         save_data_to_csv(current_data)
         messagebox.showinfo("Success", "Data saved successfully!")
-
 
 # Function to plot CO2 emissions trend
 def plot_co2_emissions(filename="ecorice_data.csv"):
@@ -73,6 +68,33 @@ def plot_co2_emissions(filename="ecorice_data.csv"):
     except Exception as e:
         messagebox.showerror("Error", f"Error plotting data: {e}")
 
+# Function to plot historical data
+def plot_historical_data(filename="ecorice_data.csv"):
+    timestamps = []
+    co2_levels = []
+    water_levels = []
+
+    try:
+        with open(filename, mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                timestamps.append(row["timestamp"])
+                co2_levels.append(float(row["co2_emissions"]))
+                water_levels.append(float(row["water_level"]))
+
+        plt.figure(figsize=(10, 5))
+        plt.plot(timestamps, co2_levels, marker='o', label="CO₂ Levels (ppm)")
+        plt.plot(timestamps, water_levels, marker='o', label="Water Level (cm)", linestyle='--')
+        plt.title("Historical Data")
+        plt.xlabel("Timestamp")
+        plt.ylabel("Values")
+        plt.xticks(rotation=45, ha="right")
+        plt.legend()
+        plt.grid()
+        plt.tight_layout()
+        plt.show()
+    except Exception as e:
+        messagebox.showerror("Error", f"Error plotting historical data: {e}")
 
 # Initialize GUI
 app = tk.Tk()
@@ -111,6 +133,7 @@ ttk.Label(frame, textvariable=co2_emissions_var).grid(row=4, column=1, sticky="w
 ttk.Button(app, text="Update Data", command=update_data).pack(pady=5)
 ttk.Button(app, text="Save Data", command=save_data).pack(pady=5)
 ttk.Button(app, text="Plot CO2 Emissions", command=plot_co2_emissions).pack(pady=5)
+ttk.Button(app, text="Plot Historical Data", command=plot_historical_data).pack(pady=5)
 
 # Start the GUI event loop
 app.mainloop()
