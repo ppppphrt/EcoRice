@@ -108,7 +108,7 @@ button_frame.pack(pady=30)
 ttk.Button(button_frame, text="Update Data", command=update_dashboard, width=25).pack(pady=5 ,padx=100)
 ttk.Button(button_frame, text="Calculate Carbon Credits", command=calculate_carbon_credits, width=25).pack(pady=5)
 ttk.Button(button_frame, text="Go to Insights", command=lambda: switch_frame(insight_frame), width=25).pack(pady=5)
-ttk.Button(button_frame, text="Go to Graphs", command=lambda: switch_frame(graph_frame), width=25).pack(pady=5)
+# ttk.Button(button_frame, text="Go to Graphs", command=lambda: switch_frame(graph_frame), width=25).pack(pady=5)
 ttk.Button(button_frame, text="Go to Household Account", command=lambda: switch_frame(account_frame), width=25).pack(pady=5)
 
 # ------------------------------
@@ -127,7 +127,7 @@ ttk.Button(insight_frame, text="Back to Dashboard", command=lambda: switch_frame
 # ------------------------------
 ttk.Label(graph_frame, text="Graphs", font=("Arial", 24)).pack(pady=20, anchor="center")
 
-ttk.Button(graph_frame, text="View Historical Data", command=plot_historical_data, width=25).pack(pady=10)
+# ttk.Button(graph_frame, text="View Historical Data", command=plot_historical_data, width=25).pack(pady=10)
 ttk.Button(graph_frame, text="Back to Dashboard", command=lambda: switch_frame(dashboard_frame), width=25).pack(pady=10)
 
 # ------------------------------
