@@ -5,11 +5,9 @@ EcoRice is an IoT-powered application designed to help farmers efficiently manag
 # Features
 
 ## Key Functionalities:
-IoT Integration: Monitors water levels, soil moisture, weather conditions, and greenhouse gas emissions (e.g., CO2) in real-time.
-Carbon Credit Tracking: Provides insights into reduced carbon emissions, helping farmers benefit financially through carbon credits.
-Production & Cost Analysis: Tracks household accounts and resource usage (e.g., water, fertilizers) for a clear overview of production costs.
-User-Friendly Interfaces: Offers tailored dashboards for different users: managers and farmers.
-System Components
+1. IoT Integration: Monitors water levels, soil moisture, weather conditions, and greenhouse gas emissions (e.g., CO2) in real-time.
+2. Carbon Credit Tracking: Provides insights into reduced carbon emissions, helping farmers benefit financially through carbon credits.
+3. Production & Cost Analysis: Tracks household accounts and resource usage (e.g., water, fertilizers) for a clear overview of production costs.
 
 # Applications
 ## gui.py (Manager Interface):
